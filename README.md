@@ -44,6 +44,16 @@ curl -sf http://macbook-pro.tailaf8a0f.ts.net:3002/health
 docker logs remote-pi-relay --tail 20
 ```
 
+### Tailscale key expiry
+
+This machine's Tailscale key expires periodically (check with `tailscale status --json | python3 -c "import sys,json; print(json.load(sys.stdin)['Self']['KeyExpiry'])"`). After expiry the device loses Tailscale connectivity until you reauthenticate:
+
+```bash
+tailscale up
+```
+
+The Tailscale IP and MagicDNS hostname are tied to the node, not the key — they stay the same after reauthentication. The relay URL in the extension does not need to change.
+
 ### After first pairing
 
 After running `/remote-pi pair` for the first time, tighten permissions on the peers file
