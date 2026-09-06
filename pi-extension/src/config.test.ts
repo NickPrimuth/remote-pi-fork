@@ -91,6 +91,6 @@ describe("toHttpUrl (ws(s):// → http(s)://)", () => {
 describe("kDefaultRelayUrl", () => {
   test("is a valid relay URL (http:// over Tailscale WireGuard tunnel)", () => {
     expect(isValidRelayUrl(kDefaultRelayUrl)).toBe(true);
-    expect(kDefaultRelayUrl).toBe("http://100.69.228.51:3002");
+    expect(kDefaultRelayUrl).toBe("http://macbook-pro.tailaf8a0f.ts.net:3002");
   });
 });

@@ -6,12 +6,12 @@ const CONFIG_DIR = path.join(os.homedir(), ".pi", "remote");
 const CONFIG_FILE = path.join(CONFIG_DIR, "config.json");
 
 /**
- * Default relay URL for the self-hosted relay (Phase 2: fill in Tailscale
- * hostname, e.g. "https://<tailscale-hostname>:3000"). Until then, no relay
- * traffic flows without an explicit REMOTE_PI_RELAY env var or config.json
- * entry — which prevents any accidental fallback to the community relay.
+ * Self-hosted relay on the Tailscale network. Plain http:// is intentional —
+ * traffic is encrypted by the WireGuard tunnel; no TLS cert needed.
+ * The relay is bound only to the Tailscale interface and is not reachable
+ * from the public internet or localhost.
  */
-export const kDefaultRelayUrl = "http://100.69.228.51:3002";
+export const kDefaultRelayUrl = "http://macbook-pro.tailaf8a0f.ts.net:3002";
 
 export type RemotePiConfig = { relay?: string };
 
@@ -41,7 +41,7 @@ export type RelayResolution = { url: string; source: "env" | "config" | "default
  * Precedence:
  *   1. `REMOTE_PI_RELAY` env var (ops/CI escape hatch)
  *   2. `~/.pi/remote/config.json` `relay` field (set via /remote-pi set-relay)
- *   3. `kDefaultRelayUrl` (community default)
+ *   3. `kDefaultRelayUrl` (self-hosted default)
  *
  * Any ws(s):// values found (legacy configs or env overrides) are coerced
  * to http(s):// defensively — the canonical form across the codebase is
