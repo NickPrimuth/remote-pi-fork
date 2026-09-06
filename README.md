@@ -16,23 +16,33 @@ pnpm build          # produces dist/
 pi install .        # registers with Pi
 ```
 
-### Relay URL (Phase 2)
+### Relay URL
 
-`kDefaultRelayUrl` in `pi-extension/src/config.ts` is currently set to a `.invalid` placeholder
-that will never resolve. No relay traffic reaches the upstream community relay by default.
-After the self-hosted relay is running (Phase 2), replace the placeholder with your Tailscale
-hostname, then rebuild and reinstall:
+`kDefaultRelayUrl` in `pi-extension/src/config.ts` is set to the self-hosted relay
+running on this machine's Tailscale IP: `http://100.69.228.51:3002`.
+
+Traffic is inside the Tailscale WireGuard tunnel so `http://` is fine — no TLS cert
+needed. The relay is bound only to the Tailscale interface and is not reachable from
+the public internet or localhost.
+
+To change the relay URL without a rebuild:
 
 ```bash
-# 1. Edit pi-extension/src/config.ts — replace the placeholder:
-#    export const kDefaultRelayUrl = "https://<tailscale-hostname>:3000";
-# 2.
-pnpm build
-pi install .
+# Via env var (takes highest precedence)
+export REMOTE_PI_RELAY=http://100.69.228.51:3002
+
+# Or via Pi slash command (persisted to ~/.pi/remote/config.json)
+/remote-pi set-relay http://100.69.228.51:3002
 ```
 
-Alternatively, set `REMOTE_PI_RELAY=https://<tailscale-hostname>:3000` in your environment
-or via `/remote-pi set-relay` — both override the compiled default without a rebuild.
+The relay container is managed by Docker Desktop with `--restart unless-stopped`.
+Data is bind-mounted at `~/.pi/remote-relay/data/mesh.db`. To check relay status:
+
+```bash
+docker ps --filter name=remote-pi-relay
+curl -sf http://100.69.228.51:3002/health
+docker logs remote-pi-relay --tail 20
+```
 
 ### After first pairing
 

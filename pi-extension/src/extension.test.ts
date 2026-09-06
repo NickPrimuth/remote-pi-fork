@@ -2886,7 +2886,7 @@ describe("/remote-pi set-relay + config", () => {
     await status("", ctx);
 
     const text = (ctx.ui.notify.mock.calls[0]![0]) as string;
-    expect(text).toContain("https://PLACEHOLDER.set-in-phase-2.invalid");
+    expect(text).toContain("http://100.69.228.51:3002");
   });
 
   test("/remote-pi status reflects env override (canonicalized to https://)", async () => {

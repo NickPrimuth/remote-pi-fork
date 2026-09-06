@@ -89,8 +89,8 @@ describe("toHttpUrl (ws(s):// → http(s)://)", () => {
 });
 
 describe("kDefaultRelayUrl", () => {
-  test("is canonical https:// form (no scheme conversion needed at resolve time)", () => {
-    expect(kDefaultRelayUrl).toMatch(/^https:\/\//);
-    expect(kDefaultRelayUrl).toBe("https://PLACEHOLDER.set-in-phase-2.invalid");
+  test("is a valid relay URL (http:// over Tailscale WireGuard tunnel)", () => {
+    expect(isValidRelayUrl(kDefaultRelayUrl)).toBe(true);
+    expect(kDefaultRelayUrl).toBe("http://100.69.228.51:3002");
   });
 });

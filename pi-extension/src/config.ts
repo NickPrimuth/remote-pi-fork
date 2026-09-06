@@ -11,7 +11,7 @@ const CONFIG_FILE = path.join(CONFIG_DIR, "config.json");
  * traffic flows without an explicit REMOTE_PI_RELAY env var or config.json
  * entry — which prevents any accidental fallback to the community relay.
  */
-export const kDefaultRelayUrl = "https://PLACEHOLDER.set-in-phase-2.invalid";
+export const kDefaultRelayUrl = "http://100.69.228.51:3002";
 
 export type RemotePiConfig = { relay?: string };
 
