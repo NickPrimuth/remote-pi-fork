@@ -1,3 +1,50 @@
+# Fork notes (NickPrimuth/remote-pi-fork)
+
+Personal fork of [jacobaraujo7/remote_pi](https://github.com/jacobaraujo7/remote_pi). Sole use
+case: controlling a Pi session on the M5 Max from an iPhone via a self-hosted relay on Tailscale.
+
+## Setup for this fork
+
+### Build requirement
+
+`dist/` is gitignored. After a fresh clone you must build before installing:
+
+```bash
+cd pi-extension
+pnpm install
+pnpm build          # produces dist/
+pi install .        # registers with Pi
+```
+
+### Relay URL (Phase 2)
+
+`kDefaultRelayUrl` in `pi-extension/src/config.ts` is currently set to a `.invalid` placeholder
+that will never resolve. No relay traffic reaches the upstream community relay by default.
+After the self-hosted relay is running (Phase 2), replace the placeholder with your Tailscale
+hostname, then rebuild and reinstall:
+
+```bash
+# 1. Edit pi-extension/src/config.ts — replace the placeholder:
+#    export const kDefaultRelayUrl = "https://<tailscale-hostname>:3000";
+# 2.
+pnpm build
+pi install .
+```
+
+Alternatively, set `REMOTE_PI_RELAY=https://<tailscale-hostname>:3000` in your environment
+or via `/remote-pi set-relay` — both override the compiled default without a rebuild.
+
+### After first pairing
+
+After running `/remote-pi pair` for the first time, tighten permissions on the peers file
+(upstream fix is tracked but not yet landed):
+
+```bash
+chmod 600 ~/.pi/remote/peers.json
+```
+
+---
+
 <p align="center">
   <img src="branding/logo-full.svg" width="140" alt="Remote Pi logo" />
 </p>
