@@ -6,13 +6,12 @@ const CONFIG_DIR = path.join(os.homedir(), ".pi", "remote");
 const CONFIG_FILE = path.join(CONFIG_DIR, "config.json");
 
 /**
- * Default community relay. Stored in canonical http(s):// form — conversion
- * to ws(s):// happens at the transport layer (see `toWebSocketUrl`). The
- * community relay's reverse proxy maps `:443 → :3000` (the WS port), so the
- * URL has no explicit port and the WebSocket upgrade rides on the same TLS
- * connection as the HTTPS endpoints used by the mesh client.
+ * Default relay URL for the self-hosted relay (Phase 2: fill in Tailscale
+ * hostname, e.g. "https://<tailscale-hostname>:3000"). Until then, no relay
+ * traffic flows without an explicit REMOTE_PI_RELAY env var or config.json
+ * entry — which prevents any accidental fallback to the community relay.
  */
-export const kDefaultRelayUrl = "https://relay-rp1.jacobmoura.work";
+export const kDefaultRelayUrl = "https://PLACEHOLDER.set-in-phase-2.invalid";
 
 export type RemotePiConfig = { relay?: string };
 
